@@ -1,5 +1,5 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Window = OrionLib:MakeWindow({Name = "Key System", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 
 
@@ -421,25 +421,70 @@ HitBoxTab:AddSlider({
 	end    
 })
  
- 
+function Antilag()
+    local Terrain = workspace:FindFirstChildOfClass('Terrain')
+    local Lighting = game:GetService("Lighting")
+	Terrain.WaterWaveSize = 0
+	Terrain.WaterWaveSpeed = 0
+	Terrain.WaterReflectance = 0
+	Terrain.WaterTransparency = 0
+	Lighting.GlobalShadows = false
+	Lighting.FogEnd = 9e9
+	settings().Rendering.QualityLevel = 1
+	for i,v in pairs(game:GetDescendants()) do
+		if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+			v.Material = "Plastic"
+			v.Reflectance = 0
+		elseif v:IsA("Decal") then
+			v.Transparency = 1
+		elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+			v.Lifetime = NumberRange.new(0)
+		elseif v:IsA("Explosion") then
+			v.BlastPressure = 1
+			v.BlastRadius = 1
+		end
+	end
+	for i,v in pairs(Lighting:GetDescendants()) do
+		if v:IsA("BlurEffect") or v:IsA("SunRaysEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("BloomEffect") or v:IsA("DepthOfFieldEffect") then
+			v.Enabled = false
+		end
+	end
+	workspace.DescendantAdded:Connect(function(child)
+		task.spawn(function()
+			if child:IsA('ForceField') then
+				RunService.Heartbeat:Wait()
+				child:Destroy()
+			elseif child:IsA('Sparkles') then
+				RunService.Heartbeat:Wait()
+				child:Destroy()
+			elseif child:IsA('Smoke') or child:IsA('Fire') then
+				RunService.Heartbeat:Wait()
+				child:Destroy()
+			end
+		end)
+	end)
+ end   
+
+
 HitBoxTab:AddButton({
 	Name = "Hitbox expander(click again if its not works)",
 	Callback = function()
     _G.HeadSize = HitboxSize
     _G.Disabled = true
- 
+   
    game:GetService('RunService').RenderStepped:connect(function()
  if _G.Disabled then
  for i,v in next, game:GetService('Players'):GetPlayers() do
  if v.Name ~= game:GetService('Players').LocalPlayer.Name then
  pcall(function()
  v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+ v.Character.HumanoidRootPart.CanCollide = false
+ v.Character.HumanoidRootPart.CanTouch = true
  v.Character.HumanoidRootPart.Transparency = 0.7
-  v.Character.HumanoidRootPart.CashShadow = false
+ v.Character.HumanoidRootPart.CashShadow = false
  v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Mid gray")
  
- v.Character.HumanoidRootPart.CanCollide = false
-  v.Character.HumanoidRootPart.CanTouch = false
+ 
 end)
 end
 end
@@ -448,12 +493,37 @@ end)
 end    
 })
  
+local ShteinWhereOptimizachia = Window:MakeTab({
+	Name = "optimization",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+ 
+ShteinWhereOptimizachia:AddButton({
+	Name = "Remove terrain",
+	Callback = function(Value)
+        workspace:FindFirstChildOfClass('Terrain'):Clear()
+        
+	end  
+ 
+})
+
+ShteinWhereOptimizachia:AddButton({
+	Name = "Anti Lag",
+	Callback = function(Value)
+        Antilag()
+        
+	end  
+ 
+})
+
+
+
 local TeleportTab = Window:MakeTab({
 	Name = "Teleport Tab",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
- 
  
  
 TeleportTab:AddButton({
@@ -538,5 +608,6 @@ KeyTab:AddButton({
   	end    
 })
 OrionLib:Init()
+
 
 
