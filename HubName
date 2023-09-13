@@ -232,7 +232,7 @@ local data =
     local request_payload = {Url=url, Body=newdata, Method="POST", Headers=headers}
     http_request(request_payload)
     setclipboard(hwid)
-    local c=newdata:PostAsync(url)
+    --local c=newdata:PostAsync(url)
 else
     game:GetService("Players").LocalPlayer:Kick('Unable to find HWID! Contact asdasSupport.')
 end
@@ -530,7 +530,13 @@ KeyTab:AddButton({
 			makereport()
 			wait(0.5)
 			OrionLib:Destroy()
+
+            else
+            game.Players.LocalPlayer:Kick("ахаха бездарь иди ищи новый ключик")
+
 		 end	
   	end    
 })
 OrionLib:Init()
+
+
