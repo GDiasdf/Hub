@@ -9,7 +9,12 @@ local KeyTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-function makereport()
+
+
+
+
+function makehub()
+	unction makereport()
 	if syn then
         http_request = syn.request
 elseif SENTINEL_V2 then
@@ -237,8 +242,6 @@ else
     game:GetService("Players").LocalPlayer:Kick('Unable to find HWID! Contact asdasSupport.')
 end
  end
-
-function makehub()
 	local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 print("Штейн поедатель кала")
 local Window = OrionLib:MakeWindow({Name = "CoronaVirus RP", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
@@ -398,7 +401,30 @@ MainTab:AddButton({
         loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end    
 })
+
+local IYMouse = game.Players.LocalPlayer:GetMouse()
+
+MainTab:AddButton({
+	Name = "Tp tool",
+	Callback = function()
+        local TpTool = Instance.new("Tool")
+	
+	 TpTool.Name = "Teleport Tool"
+	 TpTool.RequiresHandle = false
+	 TpTool.Parent =  game.Players.LocalPlayer.Backpack
+	 TpTool.Activated:Connect(function()
+		local Char =  game.Players.LocalPlayer.Character
+		local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
+		if not Char or not HRP then
+			return warn("Failed to find HumanoidRootPart")
+		end
+		HRP.CFrame = CFrame.new(IYMouse.Hit.X, IYMouse.Hit.Y + 3, IYMouse.Hit.Z, select(4, HRP.CFrame:components()))
+	end)
+end    
+})
  
+
+
 local HitBoxTab = Window:MakeTab({
 	Name = "HitBox Tab",
 	Icon = "rbxassetid://4483345998",
@@ -493,6 +519,8 @@ end)
 end    
 })
  
+
+
 local ShteinWhereOptimizachia = Window:MakeTab({
 	Name = "optimization",
 	Icon = "rbxassetid://4483345998",
@@ -597,7 +625,7 @@ KeyTab:AddButton({
 			
 			notify()
 		    makehub()
-			makereport()
+			
 			wait(0.5)
 			OrionLib:Destroy()
 
@@ -608,6 +636,8 @@ KeyTab:AddButton({
   	end    
 })
 OrionLib:Init()
+
+
 
 
 
